@@ -97,9 +97,10 @@ GameObject:
   - component: {fileID: 5521199472233625665}
   - component: {fileID: 5534294210585648640}
   - component: {fileID: 5818451136524161608}
+  - component: {fileID: 3080505784119297459}
   m_Layer: 0
   m_Name: AU_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683988f5cc0a943cab06840e7d547a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasControl: 1
   WASD:
     m_Name: WASD
     m_Type: 0
@@ -212,6 +214,25 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   movementSpeed: 5
+  isImposter: 1
+  KILL:
+    m_Name: KILL
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 07b8bdc8-1c39-4808-b75c-00ae162d0f2b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 85a20d67-b9d8-4faa-b7a8-a12b45b330d2
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: KILL
+      m_Flags: 0
+    m_Flags: 0
+  myCollider: {fileID: 5521199472233625665}
 --- !u!95 &5818451136524161608
 Animator:
   serializedVersion: 5
@@ -232,6 +253,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!135 &3080505784119297459
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521199472233625678}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5521199472770940099
 GameObject:
   m_ObjectHideFlags: 0
