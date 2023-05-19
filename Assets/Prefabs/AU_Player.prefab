@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 5521199472233625667}
   - component: {fileID: 5521199472233625664}
   - component: {fileID: 5521199472233625665}
+  - component: {fileID: 5534294210585648640}
+  - component: {fileID: 5818451136524161608}
   m_Layer: 0
   m_Name: AU_Player
   m_TagString: Untagged
@@ -148,6 +150,88 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: -0.011041641, y: -0.06624997, z: 0}
+--- !u!114 &5534294210585648640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521199472233625678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683988f5cc0a943cab06840e7d547a82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WASD:
+    m_Name: WASD
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b8b92794-1472-47c8-afa7-d90aea023362
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: Movement
+      m_Id: 9abab6b1-a5bd-4a04-b2ab-b1405f9558a8
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: WASD
+      m_Flags: 4
+    - m_Name: up
+      m_Id: e654c5d4-5341-4af4-b1b8-e21fba8a7575
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: WASD
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 67941463-4fb6-4458-af87-692b9001a1c7
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: WASD
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 487e3fbc-5a57-42b4-b4e6-171fc521f6a3
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: WASD
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 84686f15-f262-4dcb-86fb-397db6561536
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: WASD
+      m_Flags: 8
+    m_Flags: 0
+  movementSpeed: 5
+--- !u!95 &5818451136524161608
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521199472233625678}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4b01640385854b32a31a4a089fc6556, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &5521199472770940099
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +243,7 @@ GameObject:
   - component: {fileID: 5521199472770940098}
   - component: {fileID: 5521199472770940101}
   m_Layer: 0
-  m_Name: Sprite
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
