@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class AU_PlayerController : MonoBehaviour
     Vector2 movementInput;
     [SerializeField] float movementSpeed;
     //Player Color
-    static Color myColor;
+    [SerializeField] Color myColor;
     SpriteRenderer myAvatarSprite;
 
     //Role
@@ -33,22 +34,35 @@ public class AU_PlayerController : MonoBehaviour
 
     [SerializeField] GameObject bodyPrefab;
 
+    public static List<Transform> allBodies;
+
+    List<Transform> bodiesFound;
+
+    [SerializeField] InputAction REPORT;
+    [SerializeField] LayerMask ignoreForBody;
+
     private void Awake()
     {
         KILL.performed += KillTarget;
-
+        REPORT.performed += ReportBody;
     }
+
+
 
     private void OnEnable()
     {
         WASD.Enable();
         KILL.Enable();
+        REPORT.Enable();
+
     }
 
     private void OnDisable()
     {
         WASD.Disable();
         KILL.Disable();
+        REPORT.Disable();
+
     }
 
 
@@ -59,6 +73,7 @@ public class AU_PlayerController : MonoBehaviour
         {
             localPlayer = this;
         }
+
         targets = new List<AU_PlayerController>();
         myRB = GetComponent<Rigidbody>();
         myAnim = GetComponent<Animator>();
@@ -68,8 +83,12 @@ public class AU_PlayerController : MonoBehaviour
             return;
         if (myColor == Color.clear)
             myColor = Color.white;
-
         myAvatarSprite.color = myColor;
+
+
+        allBodies = new List<Transform>();
+
+        bodiesFound = new List<Transform>();
     }
 
     // Update is called once per frame
@@ -83,6 +102,13 @@ public class AU_PlayerController : MonoBehaviour
         if (movementInput.x != 0)
         {
             myAvatar.localScale = new Vector2(Mathf.Sign(movementInput.x), 1);
+        }
+
+
+
+        if (allBodies.Count > 0)
+        {
+            BodySearch();
         }
 
     }
@@ -136,9 +162,8 @@ public class AU_PlayerController : MonoBehaviour
         }
     }
 
-    void KillTarget(InputAction.CallbackContext context)
+    private void KillTarget(InputAction.CallbackContext context)
     {
-
         if (context.phase == InputActionPhase.Performed)
         {
             //Debug.Log(targets.Count);
@@ -159,13 +184,53 @@ public class AU_PlayerController : MonoBehaviour
 
     public void Die()
     {
+        AU_Body tempBody = Instantiate(bodyPrefab, transform.position, transform.rotation).GetComponent<AU_Body>();
+        tempBody.SetColor(myAvatarSprite.color);
+
         isDead = true;
 
         myAnim.SetBool("IsDead", isDead);
+        gameObject.layer = 9;
         myCollider.enabled = false;
+    }
 
-        AU_Body tempBody = Instantiate(bodyPrefab, transform.position, transform.rotation).GetComponent<AU_Body>();
-        tempBody.SetColor(myAvatarSprite.color);
+    void BodySearch()
+    {
+        foreach (Transform body in allBodies)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, body.position - transform.position);
+            Debug.DrawRay(transform.position, body.position - transform.position, Color.cyan);
+            if (Physics.Raycast(ray, out hit, 1000f, ~ignoreForBody))
+            {
+
+                if (hit.transform == body)
+                {
+                    //Debug.Log(hit.transform.name);
+                    //Debug.Log(bodiesFound.Count);
+                    if (bodiesFound.Contains(body.transform))
+                        return;
+                    bodiesFound.Add(body.transform);
+                }
+                else
+                {
+
+                    bodiesFound.Remove(body.transform);
+                }
+            }
+        }
+    }
+
+    private void ReportBody(InputAction.CallbackContext obj)
+    {
+        if (bodiesFound == null)
+            return;
+        if (bodiesFound.Count == 0)
+            return;
+        Transform tempBody = bodiesFound[bodiesFound.Count - 1];
+        allBodies.Remove(tempBody);
+        bodiesFound.Remove(tempBody);
+        tempBody.GetComponent<AU_Body>().Report();
     }
 
 }
