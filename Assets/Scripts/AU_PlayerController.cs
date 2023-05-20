@@ -8,8 +8,6 @@ public class AU_PlayerController : MonoBehaviour
 {
     [SerializeField] bool hasControl;
     public static AU_PlayerController localPlayer;
-
-
     //Components
     Rigidbody myRB;
     Animator myAnim;
@@ -41,10 +39,18 @@ public class AU_PlayerController : MonoBehaviour
     [SerializeField] InputAction REPORT;
     [SerializeField] LayerMask ignoreForBody;
 
+    //Interaction
+    [SerializeField] InputAction MOUSE;
+    Vector2 mousePositionInput;
+    Camera myCamera;
+    [SerializeField] InputAction INTERACTION;
+    [SerializeField] LayerMask interactLayer;
+
     private void Awake()
     {
         KILL.performed += KillTarget;
         REPORT.performed += ReportBody;
+        INTERACTION.performed += Interact;
     }
 
 
@@ -54,7 +60,8 @@ public class AU_PlayerController : MonoBehaviour
         WASD.Enable();
         KILL.Enable();
         REPORT.Enable();
-
+        MOUSE.Enable();
+        INTERACTION.Enable();
     }
 
     private void OnDisable()
@@ -62,7 +69,8 @@ public class AU_PlayerController : MonoBehaviour
         WASD.Disable();
         KILL.Disable();
         REPORT.Disable();
-
+        MOUSE.Disable();
+        INTERACTION.Disable();
     }
 
 
@@ -73,7 +81,7 @@ public class AU_PlayerController : MonoBehaviour
         {
             localPlayer = this;
         }
-
+        myCamera = transform.GetChild(1).GetComponent<Camera>();
         targets = new List<AU_PlayerController>();
         myRB = GetComponent<Rigidbody>();
         myAnim = GetComponent<Animator>();
@@ -111,6 +119,7 @@ public class AU_PlayerController : MonoBehaviour
             BodySearch();
         }
 
+        mousePositionInput = MOUSE.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()
@@ -190,7 +199,7 @@ public class AU_PlayerController : MonoBehaviour
         isDead = true;
 
         myAnim.SetBool("IsDead", isDead);
-        gameObject.layer = 8;
+        gameObject.layer = 9;
         myCollider.enabled = false;
     }
 
@@ -231,6 +240,26 @@ public class AU_PlayerController : MonoBehaviour
         allBodies.Remove(tempBody);
         bodiesFound.Remove(tempBody);
         tempBody.GetComponent<AU_Body>().Report();
+    }
+
+    void Interact(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            //Debug.Log("Here");
+            RaycastHit hit;
+            Ray ray = myCamera.ScreenPointToRay(mousePositionInput);
+            if (Physics.Raycast(ray, out hit, interactLayer))
+            {
+                if (hit.transform.tag == "Interactable")
+                {
+                    if (!hit.transform.GetChild(0).gameObject.activeInHierarchy)
+                        return;
+                    AU_Interactable temp = hit.transform.GetComponent<AU_Interactable>();
+                    temp.PlayMiniGame();
+                }
+            }
+        }
     }
 
 }
