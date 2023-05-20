@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5521199470682602961}
   - component: {fileID: 5521199470682602960}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Part
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 5534294210585648640}
   - component: {fileID: 5818451136524161608}
   - component: {fileID: 3080505784119297459}
-  m_Layer: 0
+  - component: {fileID: 1891286283273078860}
+  m_Layer: 6
   m_Name: AU_Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -233,6 +234,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   myCollider: {fileID: 5521199472233625665}
+  bodyPrefab: {fileID: 9204113156180359143, guid: fe5ec41af70d54488ae232d244b8edc6, type: 3}
 --- !u!95 &5818451136524161608
 Animator:
   serializedVersion: 5
@@ -266,6 +268,30 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1891286283273078860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521199472233625678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f86acd52d824d08963243ccd0fd87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMe:
+    serializedVersion: 2
+    m_Bits: 64
+  getRadius: 20
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 128
+  sceneObjects: []
+  lightRays: {fileID: 0}
+  offset: 0.05
+  showRed: 0
+  showGreen: 0
 --- !u!1 &5521199472770940099
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5521199472770940098}
   - component: {fileID: 5521199472770940101}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
