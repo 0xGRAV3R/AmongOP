@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +47,11 @@ public class AU_PlayerController : MonoBehaviour
     [SerializeField] InputAction INTERACTION;
     [SerializeField] LayerMask interactLayer;
 
+    //Networking
+    PhotonView myPV;
+    [SerializeField] GameObject lightMask;
+    [SerializeField] lightcaster myLightCaster;
+
     private void Awake()
     {
         KILL.performed += KillTarget;
@@ -77,7 +83,8 @@ public class AU_PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (hasControl)
+        myPV = GetComponent<PhotonView>();
+        if (myPV.IsMine)
         {
             localPlayer = this;
         }
@@ -87,22 +94,29 @@ public class AU_PlayerController : MonoBehaviour
         myAnim = GetComponent<Animator>();
         myAvatar = transform.GetChild(0);
         myAvatarSprite = myAvatar.GetComponent<SpriteRenderer>();
-        if (!hasControl)
+        if (!myPV.IsMine)
+        {
+            myCamera.gameObject.SetActive(false);
+            lightMask.SetActive(false);
+            myLightCaster.enabled = false;
             return;
+        }
         if (myColor == Color.clear)
             myColor = Color.white;
         myAvatarSprite.color = myColor;
 
 
-        allBodies = new List<Transform>();
-
+        if (allBodies == null)
+        {
+            allBodies = new List<Transform>();
+        }
         bodiesFound = new List<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!hasControl)
+        if (!myPV.IsMine)
             return;
 
         movementInput = WASD.ReadValue<Vector2>();
@@ -119,11 +133,23 @@ public class AU_PlayerController : MonoBehaviour
             BodySearch();
         }
 
+        if (REPORT.triggered)
+        {
+            if (bodiesFound.Count == 0)
+                return;
+            Transform tempBody = bodiesFound[bodiesFound.Count - 1];
+            allBodies.Remove(tempBody);
+            bodiesFound.Remove(tempBody);
+            tempBody.GetComponent<AU_Body>().Report();
+        }
+
         mousePositionInput = MOUSE.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()
     {
+        if (!myPV.IsMine)
+            return;
         myRB.velocity = movementInput * movementSpeed;
     }
 
