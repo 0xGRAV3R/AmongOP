@@ -449,6 +449,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7340373885582884281, guid: 9ea8b24e184253f4dae2ce4e156e9b05, type: 3}
+      propertyPath: roomSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9105644919135121541, guid: 9ea8b24e184253f4dae2ce4e156e9b05, type: 3}
       propertyPath: m_Name
       value: PhotonQuickStart
